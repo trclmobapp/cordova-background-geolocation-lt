@@ -3,7 +3,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-background-geolocation-lt"
-    version="4.17.5">
+    version="4.16.4">
 
     <name>BackgroundGeolocation</name>
     <description>The most sophisticated, battery-efficient background-geolocation and geofencing plugin for Cordova</description>
@@ -29,6 +29,21 @@
     <platform name="ios">
         <preference name="BACKGROUND_MODE_LOCATION" default="&lt;string&gt;location&lt;/string&gt;" />
 
+        <!-- background-geolocation added date : 23-10-2024-->
+    <config-file parent="NSLocationAlwaysAndWhenInUseUsageDescription" target="*-Info.plist">
+        <string>Background location tracking is required for our app so we can validate the sales person dealer visits activity</string>
+    </config-file>
+    <config-file parent="NSLocationAlwaysUsageDescription" target="*-Info.plist">
+        <string>Background location tracking is required for our app so we can validate the sales person dealer visits activity</string>
+    </config-file>
+    <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
+        <string>Background location tracking is required for our app so we can validate the sales person dealer visits activity</string>
+    </config-file>
+    <config-file parent="NSMotionUsageDescription" target="*-Info.plist">
+        <string>Device motion updates help determine when the device is stationary so the app can save power by turning off location-updates</string>
+    </config-file>
+    <!-- /background-geolocation -->
+
         <!-- required background modes:  App registers for location updates -->
         <config-file target="*-Info.plist" parent="UIBackgroundModes">
             <array>
@@ -42,7 +57,52 @@
             </feature>
         </config-file>
 
+<privacy-manifest>
+          <key>NSPrivacyAccessedAPITypes</key>
+          <array>
+              <!-- [1] cordova-background-fetch: UserDefaults -->
+              <dict>
+                  <key>NSPrivacyAccessedAPIType</key>
+                  <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
 
+                  <key>NSPrivacyAccessedAPITypeReasons</key>
+                  <array>
+                      <string>CA92.1</string>
+                  </array>
+              </dict>
+
+              <!-- [2] cordova-background-geolocation: UserDefaults -->
+              <dict>
+                  <key>NSPrivacyAccessedAPIType</key>
+                  <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+
+                  <key>NSPrivacyAccessedAPITypeReasons</key>
+                  <array>
+                      <string>CA92.1</string>
+                      <string>1C8F.1</string>
+                  </array>
+              </dict>
+              <!-- [3] cordova-background-geolocation (CocoaLumberjack): FileTimestamp -->
+              <dict>
+                  <key>NSPrivacyAccessedAPIType</key>
+                  <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+                  <key>NSPrivacyAccessedAPITypeReasons</key>
+                  <array>
+                      <string>C617.1</string>
+                      <string>0A2A.1</string>
+                  </array>
+              </dict>
+              <!-- [4] cordova-background-geolocation (CocoaLumberjack): DiskSpace -->
+              <dict>
+                  <key>NSPrivacyAccessedAPIType</key>
+                  <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+                  <key>NSPrivacyAccessedAPITypeReasons</key>
+                  <array>
+                      <string>E174.1</string>
+                  </array>
+              </dict>
+          </array>
+      </privacy-manifest>
         <podspec>
             <config>
                 <source url="https://cdn.cocoapods.org/"/>
@@ -67,7 +127,12 @@
     <platform name="android">
         <preference name="GOOGLE_API_VERSION" default="20.+" />
         <preference name="HMS_LOCATION_VERSION" default="6.9.0.300" />
-        <preference name="OKHTTP_VERSION" default="3.12.+" />
+        <preference name="OKHTTP_VERSION" default="3.12.+" />      
+        
+        
+        <preference name="LICENSE" default ="[CHANGEME]"/>
+        
+
         <framework src="com.squareup.okhttp3:okhttp:$OKHTTP_VERSION"/>
         <preference name="EVENTBUS_VERSION" default="3.3.1" />
         <framework src="org.greenrobot:eventbus:$EVENTBUS_VERSION"/>
@@ -90,6 +155,15 @@
                 <param name="android-package" value="com.transistorsoft.cordova.bggeo.CDVBackgroundGeolocation"/>
             </feature>
         </config-file>
+<!-- Cordova Background Geolocation License emc-->
+      <config-file parent="/manifest/application" target="app/src/main/AndroidManifest.xml">
+          <meta-data
+            android:name="com.transistorsoft.locationmanager.license"
+            android:value="$.LICENSE" />
+            
+      </config-file>
+      <!-- Cordova Background Geolocation License eagle-->
+      <!-- android:value="419d45f55730e84f6f5a294c8eb9f207e829805acd383e51de9f345c74308cf3" /> -->
      </platform>
 
      <!-- Browser (mock) -->
